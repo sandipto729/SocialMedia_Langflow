@@ -5,7 +5,7 @@ import styles from './Login.module.scss';
 import SummaryApi from '../../common';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
-import { setUserDetails } from './../../store/userSlice';
+import { setUserDetails } from './../../store//userslice';
 import { useNavigate } from 'react-router-dom';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
