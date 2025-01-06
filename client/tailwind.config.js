@@ -9,12 +9,16 @@ module.exports = {
           700: '#1D4ED8',
           100: '#DBEAFE',
         },
-        secondary: '#3B82F6',
+        // secondary: '#3B82F6',
         accent: '#EAB308',
         background: '#F8FAFC',
         text: '#1E293B',
         border: '#E2E8F0',
         foreground: 'rgb(var(--foreground))', // Added to match `--foreground` variable
+
+        // primary: '#FFFFFF',
+        secondary: '#6f5afa',
+        // background: '#1650d9',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui'],
