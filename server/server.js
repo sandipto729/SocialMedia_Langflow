@@ -1,9 +1,12 @@
-require('dotenv').config();
+const dotenv=require('dotenv').config();
 const express = require('express');
 const http = require('http');
 const { Server } = require('socket.io');
 const axios = require('axios');
 const cors = require('cors');
+const connectDB = require('./config/db.js');
+const connectAstraDB=require('./config/astraDb.js');
+const routes=require('./routes/index.js');
 
 const app = express();
 const server = http.createServer(app);
@@ -23,28 +26,39 @@ app.use(cors({
 
 app.use(express.json());
 
-const connections = new Map();
-
-io.on('connection', (socket) => {
-    const requestId = Math.random().toString(36).substring(7);
-    connections.set(requestId, socket);
-
-    socket.emit('requestId', { requestId });
-
-    socket.on('disconnect', () => {
-        connections.forEach((connSocket, id) => {
-            if (connSocket === socket) {
-                connections.delete(id);
-            }
-        });
-    });
-});
+connectDB();
+connectAstraDB();
 
 app.get('/', (req, res) => {
     res.send('Hello World');
 });
 
+app.use('/api', routes);
+
+const connections = new Map();
+
+io.on('connection', (socket) => {
+    console.log(`New connection: ${socket.id}`);
+    const requestId = Math.random().toString(36).substring(7);
+    connections.set(requestId, socket);
+    console.log(`Request ID generated: ${requestId}`);
+    
+    socket.emit('requestId', { requestId });
+
+    socket.on('disconnect', () => {
+        console.log(`Disconnect: ${socket.id}`);
+        connections.forEach((connSocket, id) => {
+            if (connSocket === socket) {
+                connections.delete(id);
+                console.log(`Removed connection for requestId: ${id}`);
+            }
+        });
+    });
+});
+
+
 app.post('/chat', async (req, res) => {
+    console.log('Received request:', req.body); // Check the incoming data
     const { input_value, requestId } = req.body;
     const socket = connections.get(requestId);
 
@@ -78,17 +92,17 @@ app.post('/chat', async (req, res) => {
                 }
             }
         );
-
+        console.log('API response:', response.data); // Check the response from the API
         const message = response.data.outputs[0].outputs[0].results.message.text;
-
         socket.emit('response', { message });
         res.json({ status: 'Processing' });
-
     } catch (error) {
+        console.error('Error processing request:', error); // Check the error
         socket.emit('error', { message: error.message });
         res.status(500).json({ error: error.message });
     }
 });
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {

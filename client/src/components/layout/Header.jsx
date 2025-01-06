@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ArrowRight } from "lucide-react";
+import { Menu, X, ArrowRight, Hash } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HashLink } from 'react-router-hash-link'; 
 
 // Enhanced Header Component
 const Header = () => {
@@ -17,18 +18,25 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const scrollToSection = (sectionId) => {
-    setIsMenuOpen(false);
-    const element = document.getElementById(sectionId);
-    const headerOffset = 80;
-    const elementPosition = element.getBoundingClientRect().top;
-    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+//   const scrollToSection = (sectionId) => {
+//   setIsMenuOpen(false);
+//   const element = document.getElementById(sectionId);
 
-    window.scrollTo({
-      top: offsetPosition,
-      behavior: "smooth",
-    });
-  };
+//   if (!element) {
+//     console.error(`Element with id "${sectionId}" not found`);
+//     return;
+//   }
+
+//   const headerOffset = 80;
+//   const elementPosition = element.getBoundingClientRect().top;
+//   const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+//   window.scrollTo({
+//     top: offsetPosition,
+//     // behavior: "smooth",
+//   });
+// };
+
 
   return (
     <header
@@ -45,21 +53,21 @@ const Header = () => {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center gap-8">
-            <button
-              onClick={() => scrollToSection("features")}
+            <HashLink smooth to='/home#features'
+              
               className="text-gray-600 hover:text-primary-600 transition-colors">
               Features
-            </button>
-            <button
-              onClick={() => scrollToSection("team")}
+            </HashLink>
+            <HashLink smooth to='/home#team'
+              
               className="text-gray-600 hover:text-primary-600 transition-colors">
               Team
-            </button>
-            <button
-              onClick={() => scrollToSection("contact")}
+            </HashLink>
+            <HashLink smooth to='/home#contact'
+              
               className="text-gray-600 hover:text-primary-600 transition-colors">
               Contact
-            </button>
+            </HashLink>
             <Link to='/login'
               className="text-gray-600 hover:text-primary-600 transition-colors">
               Login

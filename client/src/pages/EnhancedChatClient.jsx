@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
+import { io } from "socket.io-client";
 import { MessageCircle, Send, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -8,11 +9,12 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [ws, setWs] = useState(null);
   const [requestId, setRequestId] = useState(null);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
   const welcomeMessageShownRef = useRef(false);
+
+  const socket = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -35,34 +37,44 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
     }
   }, [isExpanded]);
 
+  // Initialize socket connection
   useEffect(() => {
-    const wsConnection = new WebSocket("wss://8f07-13-51-196-191.ngrok-free.app");
-    wsConnection.onmessage = (event) => {
-      const data = JSON.parse(event.data);
-      if (data.type === "requestId") {
-        setRequestId(data.requestId);
-      } else if (data.type === "response") {
-        setMessages((prev) => [
-          ...prev,
-          { text: data.message, type: "response" },
-        ]);
-        setIsLoading(false);
-      } else if (data.type === "error") {
-        setError(data.message);
-        setIsLoading(false);
-      }
-    };
+    socket.current = io(import.meta.env.VITE_BACKEND_URI, {
+      withCredentials: true,
+    });
 
-    wsConnection.onerror = () => {
-      setError("WebSocket connection error");
+    socket.current.on("connect", () => {
+      console.log("Connected to server:", socket.current.id);
+    });
+
+    socket.current.on("requestId", (data) => {
+      setRequestId(data.requestId);
+      console.log("Request ID received:", data.requestId);
+    });
+
+    socket.current.on("response", (data) => {
+      setMessages((prev) => [
+        ...prev,
+        { text: data.message, type: "response" },
+      ]);
       setIsLoading(false);
-    };
+    });
 
-    setWs(wsConnection);
-    return () => wsConnection.close();
+    socket.current.on("error", (data) => {
+      setError(data.message);
+      setIsLoading(false);
+    });
+
+    socket.current.on("disconnect", () => {
+      console.log("Socket disconnected");
+    });
+
+    return () => {
+      socket.current.disconnect();
+    };
   }, []);
 
-  const sendMessage = useCallback(async () => {
+  const sendMessage = useCallback(() => {
     if (!inputMessage.trim() || !requestId || isLoading) return;
 
     try {
@@ -70,14 +82,21 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
       setError(null);
       setMessages((prev) => [...prev, { text: inputMessage, type: "user" }]);
 
-      const response = await fetch("https://8f07-13-51-196-191.ngrok-free.app/chat", {
+      fetch(import.meta.env.VITE_BACKEND_URI+"/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input_value: inputMessage, requestId }),
-      });
-
-      if (!response.ok) throw new Error("Failed to send message");
-      setInputMessage("");
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to send message");
+          }
+          setInputMessage("");
+        })
+        .catch((err) => {
+          setError(err.message);
+          setIsLoading(false);
+        });
     } catch (err) {
       setError(err.message);
       setIsLoading(false);

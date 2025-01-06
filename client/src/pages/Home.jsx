@@ -10,9 +10,9 @@ const Home = () => {
     <div className="min-h-screen bg-gray-50">
       {/* <Header /> */}
       <main>
-        <Hero />
-        <Features />
-        <TeamSection />
+        <Hero id="hero" />
+        <Features id='features'/>
+        <TeamSection id='team'/>
       </main>
       <Footer />
     </div>
