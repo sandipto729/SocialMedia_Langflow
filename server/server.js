@@ -4,7 +4,7 @@ const http = require('http');
 const { Server } = require('socket.io');
 const axios = require('axios');
 const cors = require('cors');
-const connectDB = require('./config/db.js');
+// const connectDB = require('./config/db.js');
 const connectAstraDB=require('./config/astraDb.js');
 const routes=require('./routes/index.js');
 
@@ -26,7 +26,7 @@ app.use(cors({
 
 app.use(express.json());
 
-connectDB();
+// connectDB();
 connectAstraDB();
 
 app.get('/', (req, res) => {
