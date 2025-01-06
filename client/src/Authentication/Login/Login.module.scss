@@ -1,0 +1,125 @@
+.container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3);
+    }
+  
+    h2 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #333;
+      font-weight: 600;
+    }
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    text-align: left;
+  
+    label {
+      font-size: 1rem;
+      margin-bottom: 5px;
+      display: block;
+      color: #555;
+      font-weight: 500;
+    }
+  
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  
+      &:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        outline: none;
+      }
+    }
+  }
+  
+  .button {
+    width: 100%;
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  
+    &:hover {
+      background-color: #0056b3;
+    }
+  }
+  
+  .error {
+    color: red;
+    font-size: 0.875rem;
+    margin-top: 5px;
+  }
+  
+  .contact-admin {
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #777;
+    font-weight: 400;
+    text-align: center;
+  }
+  
+  
+  .password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  
+  .password-container input {
+    width: 100%;
+    padding-right: 40px; /* Add padding to make space for the icon */
+  }
+  
+  .eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+  
+    &:hover {
+      color: #007bff;
+    }
+  }
+  
+  .forgot-password {
+    font-size: 14px;
+    color: #007bff; /* A shade of blue */
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .forgot-password:hover {
+    color: #0056b3; /* Darker shade of blue */
+    text-decoration: underline;
+  }
+  
+  .forgot-password:active {
+    color: #004085; /* Even darker shade of blue for active state */
+  }
