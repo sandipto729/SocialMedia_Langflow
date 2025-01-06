@@ -6,21 +6,21 @@ const SideLinks = () => {
     const links = [{
         name: "Home",
         link: '/',
-        icon: <ChartNoAxesCombined className="text-white group-hover/link:text-orange-400" size={'40'} />,
+        icon: <ChartNoAxesCombined className="text-white group-hover/link:text-secondary" size={'40'} />,
     }, {
         name: 'Dashboard',
         link: '/dashboard',
-        icon: <ContactRound className="text-white group-hover/link:text-orange-400" size={'40'} />,
+        icon: <ContactRound className="text-white group-hover/link:text-secondary" size={'40'} />,
     },
     {
         name: 'Team',
         link: '/team',
-        icon: <UsersRound className="text-white group-hover/link:text-orange-400" size={'40'} />,
+        icon: <UsersRound className="text-white group-hover/link:text-secondary" size={'40'} />,
     },
     {
         name: 'Contact',
         link: '/contact',
-        icon: <Mail className="text-white group-hover/link:text-orange-400" size={'40'} />,
+        icon: <Mail className="text-white group-hover/link:text-secondary" size={'40'} />,
     }]
 
     return (
@@ -33,11 +33,11 @@ const SideLinks = () => {
                                 <Link to={item.link} className="group/link flex justify-between">
                                     {item.icon}
                                     <div className="w-[80%] mx-5">
-                                        <span className="text-white font-light group-hover/link:text-orange-400">{item.name}</span>
+                                        <span className="text-white font-light group-hover/link:text-secondary">{item.name}</span>
                                     </div>
                                 </Link>
                             </div>
-                            <div className="opacity-0 group-hover:opacity-80 w-2 h-[60px] rounded-lg bg-orange-400 transition-all duration-300"></div>
+                            <div className="opacity-0 group-hover:opacity-80 w-2 h-[60px] rounded-lg bg-secondary transition-all duration-300"></div>
                         </li>
                     ))
                 }
