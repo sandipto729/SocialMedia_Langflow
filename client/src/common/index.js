@@ -1,9 +1,9 @@
-const BACKEND_URI="http://localhost:5000";
+const BACKEND_URI = import.meta.env.VITE_BACKEND_URI;
 
 const SummaryApi = {
-    UserProfile: {
-        url: `${BACKEND_URI}/api/user/profile`,
-        method: 'GET',
+    FetchData:{
+        url:`${BACKEND_URI}/api/getAstraData`,
+        method:"GET"
     }
 }
 export default SummaryApi;

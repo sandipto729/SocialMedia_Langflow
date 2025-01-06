@@ -1,6 +1,7 @@
 import React from "react";
 import { ArrowUp, Github, Linkedin, Mail } from "lucide-react";
 import { Link } from "react-router-dom";
+import { HashLink } from "react-router-hash-link";
 
 const Footer = () => {
   const scrollToTop = () => {
@@ -14,29 +15,30 @@ const Footer = () => {
     <footer id="contact" className="bg-gray-900 text-white">
       <div className="max-w-7xl mx-auto px-4">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 py-16">
           {/* Company Info */}
           <div className="space-y-4">
             <img src="/logo2.svg" alt="logo" className="w-16" />
             <p className="text-gray-400">
-              Transforming social media strategy with AI-powered analytics
+              Social media analytics and automation platform powered by AI
             </p>
             <div className="flex gap-4">
               <a
-                href="#"
+                href="https://github.com/sandipto729/SocialMedia_Langflow"
                 className="text-gray-400 hover:text-white transition-colors">
                 <Github size={20} />
               </a>
-              <a
+              {/* <a
                 href="#"
                 className="text-gray-400 hover:text-white transition-colors">
                 <Linkedin size={20} />
-              </a>
+              </a> */}
               <a
-                href="#"
+                href="mailto:sr.23cs8002@nitdgp.ac.in"
                 className="text-gray-400 hover:text-white transition-colors">
                 <Mail size={20} />
               </a>
+
             </div>
           </div>
 
@@ -44,16 +46,16 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Quick Links</h4>
             <div className="flex flex-col gap-2">
-              <Link to={"/"} onClick={scrollToTop}>
+              <HashLink smooth to={"/#features"} onClick={scrollToTop}>
                 <button className="text-gray-400 hover:text-white transition-colors text-left">
                   Features
                 </button>
-              </Link>
-              <Link to={"/"} onClick={scrollToTop}>
+              </HashLink>
+              <HashLink smooth to={"/#team"} onClick={scrollToTop}>
                 <button className="text-gray-400 hover:text-white transition-colors text-left">
                   Team
                 </button>
-              </Link>
+              </HashLink>
 
               <Link to={"/dashboard"} onClick={scrollToTop}>
                 <button className="text-gray-400 hover:text-white transition-colors text-left">
@@ -67,26 +69,11 @@ const Footer = () => {
           <div className="space-y-4">
             <h4 className="text-lg font-semibold">Contact</h4>
             <div className="space-y-2 text-gray-400">
-              <p>Email: developxdave@gmail.com</p>
-              <p>Location: NIT Jalandhar</p>
+              <p>Email: sr.23cs8002@nitdgp.ac.in</p>
+              <p>NIT Durgapur,Durgapur,WB</p>
             </div>
           </div>
 
-          {/* Newsletter */}
-          <div className="space-y-4">
-            <h4 className="text-lg font-semibold">Stay Updated</h4>
-            <p className="text-gray-400">Subscribe to our newsletter</p>
-            <div className="flex gap-2">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="bg-gray-800 text-white px-4 py-2 rounded-lg flex-grow"
-              />
-              <button className="bg-primary-600 text-white px-4 py-2 rounded-lg hover:bg-primary-700 transition-colors">
-                Subscribe
-              </button>
-            </div>
-          </div>
         </div>
 
         {/* Bottom Bar */}

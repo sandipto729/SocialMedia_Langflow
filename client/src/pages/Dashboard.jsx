@@ -44,57 +44,7 @@ import {
 } from "lucide-react";
 import Footer from "@/components/layout/Footer";
 import EnhancedChatClient from "./EnhancedChatClient";
-
-// Generate more realistic mock data
-const generateMockData = () => {
-  const startDate = new Date("2024-01-01");
-  const endDate = new Date("2024-03-31");
-  const posts = [];
-  const postTypes = ["Reel", "Carousel", "Static"];
-
-  for (
-    let date = new Date(startDate);
-    date <= endDate;
-    date.setDate(date.getDate() + 1)
-  ) {
-    const numPosts = Math.floor(Math.random() * 3) + 1; // 1-3 posts per day
-
-    for (let i = 0; i < numPosts; i++) {
-      const postType = postTypes[Math.floor(Math.random() * postTypes.length)];
-      const baseEngagement = {
-        Reel: { likes: [800, 2000], shares: [100, 500], comments: [50, 300] },
-        Carousel: {
-          likes: [500, 1500],
-          shares: [80, 300],
-          comments: [30, 200],
-        },
-        Static: { likes: [300, 1000], shares: [50, 200], comments: [20, 150] },
-      }[postType];
-
-      const randomInRange = (min, max) =>
-        Math.floor(Math.random() * (max - min + 1)) + min;
-
-      posts.push({
-        Post_ID: `${date.toISOString().split("T")[0]}-${i + 1}`,
-        Post_Type: postType,
-        Likes: randomInRange(baseEngagement.likes[0], baseEngagement.likes[1]),
-        Shares: randomInRange(
-          baseEngagement.shares[0],
-          baseEngagement.shares[1]
-        ),
-        Comments: randomInRange(
-          baseEngagement.comments[0],
-          baseEngagement.comments[1]
-        ),
-        Date_Posted: date.toISOString().split("T")[0],
-      });
-    }
-  }
-
-  return posts;
-};
-
-const mockPosts = generateMockData();
+import SummaryApi from "../common";
 
 // DateRangePicker Component
 const DateRangePicker = ({
@@ -151,9 +101,9 @@ const DashboardHeader = ({
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="Reel">Reel</SelectItem>
-              <SelectItem value="Carousel">Carousel</SelectItem>
-              <SelectItem value="Static">Static</SelectItem>
+              <SelectItem value="reel">Reel</SelectItem>
+              <SelectItem value="carousel">Carousel</SelectItem>
+              <SelectItem value="static_image">Static Iamge</SelectItem>
             </SelectContent>
           </Select>
           <Button variant="outline" size="icon" onClick={onRefresh}>
@@ -169,185 +119,185 @@ const DashboardHeader = ({
 };
 
 // PerformanceCards Component
-const PerformanceCards = ({ data }) => {
-  const COLORS = [
-    "hsl(var(--chart-1))",
-    "hsl(var(--chart-2))",
-    "hsl(var(--chart-3))",
-  ];
+// const PerformanceCards = ({ data }) => {
+//   const COLORS = [
+//     "hsl(var(--chart-1))",
+//     "hsl(var(--chart-2))",
+//     "hsl(var(--chart-3))",
+//   ];
 
-  const getPostTypeIcon = (type) => {
-    switch (type) {
-      case "Reel":
-        return <Film className="h-4 w-4" />;
-      case "Carousel":
-        return <Images className="h-4 w-4" />;
-      case "Static":
-        return <ImageIcon className="h-4 w-4" />;
-      default:
-        return null;
-    }
-  };
+//   const getPostTypeIcon = (type) => {
+//     switch (type) {
+//       case "Reel":
+//         return <Film className="h-4 w-4" />;
+//       case "Carousel":
+//         return <Images className="h-4 w-4" />;
+//       case "Static":
+//         return <ImageIcon className="h-4 w-4" />;
+//       default:
+//         return null;
+//     }
+//   };
 
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Post Distribution</CardTitle>
-          <CardDescription>Breakdown by post type</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <ResponsiveContainer width="100%" height={200}>
-            <PieChart>
-              <Pie
-                data={data.postDistribution}
-                dataKey="value"
-                nameKey="name"
-                cx="50%"
-                cy="50%"
-                outerRadius={80}
-                fill="hsl(var(--chart-1))">
-                {data.postDistribution.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={COLORS[index % COLORS.length]}
-                  />
-                ))}
-              </Pie>
-              <Tooltip />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
-        </CardContent>
-      </Card>
+//   return (
+//     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>Post Distribution</CardTitle>
+//           <CardDescription>Breakdown by post type</CardDescription>
+//         </CardHeader>
+//         <CardContent>
+//           <ResponsiveContainer width="100%" height={200}>
+//             <PieChart>
+//               <Pie
+//                 data={data.postDistribution}
+//                 dataKey="value"
+//                 nameKey="name"
+//                 cx="50%"
+//                 cy="50%"
+//                 outerRadius={80}
+//                 fill="hsl(var(--chart-1))">
+//                 {data.postDistribution.map((entry, index) => (
+//                   <Cell
+//                     key={`cell-${index}`}
+//                     fill={COLORS[index % COLORS.length]}
+//                   />
+//                 ))}
+//               </Pie>
+//               <Tooltip />
+//               <Legend />
+//             </PieChart>
+//           </ResponsiveContainer>
+//         </CardContent>
+//       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Engagement Summary</CardTitle>
-          <CardDescription>Average engagement by type</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {data.engagementSummary.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {getPostTypeIcon(item.type)}
-                  <span>{item.type}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>{item.rate.toFixed(1)}%</span>
-                  {item.trend > 0 ? (
-                    <TrendingUp className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <TrendingDown className="h-4 w-4 text-red-500" />
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>Engagement Summary</CardTitle>
+//           <CardDescription>Average engagement by type</CardDescription>
+//         </CardHeader>
+//         <CardContent>
+//           <div className="space-y-4">
+//             {data.engagementSummary.map((item, index) => (
+//               <div key={index} className="flex items-center justify-between">
+//                 <div className="flex items-center gap-2">
+//                   {getPostTypeIcon(item.type)}
+//                   <span>{item.type}</span>
+//                 </div>
+//                 <div className="flex items-center gap-2">
+//                   <span>{item.engagement}%</span>
+//                   {item.trend > 0 ? (
+//                     <TrendingUp className="h-4 w-4 text-green-500" />
+//                   ) : (
+//                     <TrendingDown className="h-4 w-4 text-red-500" />
+//                   )}
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         </CardContent>
+//       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Total Engagement</CardTitle>
-          <CardDescription>All-time totals</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">Likes</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.likes.toLocaleString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Shares</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.shares.toLocaleString()}
-                </p>
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Comments</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.comments.toLocaleString()}
-                </p>
-              </div>
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
-};
+//       <Card>
+//         <CardHeader>
+//           <CardTitle>Total Engagement</CardTitle>
+//           <CardDescription>All-time totals</CardDescription>
+//         </CardHeader>
+//         <CardContent>
+//           <div className="space-y-4">
+//             <div className="grid grid-cols-3 gap-4">
+//               <div>
+//                 <p className="text-sm text-muted-foreground">likes</p>
+//                 <p className="text-2xl font-bold">
+//                   {data.totals.likes.toLocaleString()}
+//                 </p>
+//               </div>
+//               <div>
+//                 <p className="text-sm text-muted-foreground">shares</p>
+//                 <p className="text-2xl font-bold">
+//                   {data.totals.shares.toLocaleString()}
+//                 </p>
+//               </div>
+//               <div>
+//                 <p className="text-sm text-muted-foreground">comments</p>
+//                 <p className="text-2xl font-bold">
+//                   {data.totals.comments.toLocaleString()}
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// };
 
 // PerformanceChart Component
-const PerformanceChart = ({ data }) => {
-  return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle>Post Performance Over Time</CardTitle>
-        <CardDescription>Daily engagement metrics</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="likes"
-              stroke="hsl(var(--chart-1))"
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="shares"
-              stroke="hsl(var(--chart-2))"
-              activeDot={{ r: 8 }}
-            />
-            <Line
-              type="monotone"
-              dataKey="comments"
-              stroke="hsl(var(--chart-3))"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      </CardContent>
-    </Card>
-  );
-};
+// const PerformanceChart = ({ data }) => {
+//   return (
+//     <Card className="mb-6">
+//       <CardHeader>
+//         <CardTitle>Post Performance Over Time</CardTitle>
+//         <CardDescription>Daily engagement metrics</CardDescription>
+//       </CardHeader>
+//       <CardContent>
+//         <ResponsiveContainer width="100%" height={400}>
+//           <LineChart data={data}>
+//             <CartesianGrid strokeDasharray="3 3" />
+//             <XAxis dataKey="date" />
+//             <YAxis />
+//             <Tooltip />
+//             <Legend />
+//             <Line
+//               type="monotone"
+//               dataKey="likes"
+//               stroke="hsl(var(--chart-1))"
+//               activeDot={{ r: 8 }}
+//             />
+//             <Line
+//               type="monotone"
+//               dataKey="shares"
+//               stroke="hsl(var(--chart-2))"
+//               activeDot={{ r: 8 }}
+//             />
+//             <Line
+//               type="monotone"
+//               dataKey="comments"
+//               stroke="hsl(var(--chart-3))"
+//               activeDot={{ r: 8 }}
+//             />
+//           </LineChart>
+//         </ResponsiveContainer>
+//       </CardContent>
+//     </Card>
+//   );
+// };
 
 // TypeComparisonChart Component
-const TypeComparisonChart = ({ data }) => {
-  return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle>Post Type Comparison</CardTitle>
-        <CardDescription>Average engagement by post type</CardDescription>
-      </CardHeader>
-      <CardContent>
-        <ResponsiveContainer width="100%" height={400}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="type" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="likes" fill="hsl(var(--chart-1))" />
-            <Bar dataKey="shares" fill="hsl(var(--chart-2))" />
-            <Bar dataKey="comments" fill="hsl(var(--chart-3))" />
-          </BarChart>
-        </ResponsiveContainer>
-      </CardContent>
-    </Card>
-  );
-};
+// const TypeComparisonChart = ({ data }) => {
+//   return (
+//     <Card className="mb-6">
+//       <CardHeader>
+//         <CardTitle>Post Type Comparison</CardTitle>
+//         <CardDescription>Average engagement by post type</CardDescription>
+//       </CardHeader>
+//       <CardContent>
+//         <ResponsiveContainer width="100%" height={400}>
+//           <BarChart data={data}>
+//             <CartesianGrid strokeDasharray="3 3" />
+//             <XAxis dataKey="type" />
+//             <YAxis />
+//             <Tooltip />
+//             <Legend />
+//             <Bar dataKey="likes" fill="hsl(var(--chart-1))" />
+//             <Bar dataKey="shares" fill="hsl(var(--chart-2))" />
+//             <Bar dataKey="comments" fill="hsl(var(--chart-3))" />
+//           </BarChart>
+//         </ResponsiveContainer>
+//       </CardContent>
+//     </Card>
+//   );
+// };
 
 // DataGrid Component
 const DataGrid = ({ data }) => {
@@ -372,34 +322,29 @@ const DataGrid = ({ data }) => {
                 <th className="p-2 text-left">Post ID</th>
                 <th className="p-2 text-left">Type</th>
                 <th className="p-2 text-left">Date</th>
-                <th className="p-2 text-right">Likes</th>
-                <th className="p-2 text-right">Shares</th>
-                <th className="p-2 text-right">Comments</th>
-                <th className="p-2 text-right">Engagement Rate</th>
+                <th className="p-2 text-right">likes</th>
+                <th className="p-2 text-right">shares</th>
+                <th className="p-2 text-right">comments</th>
+                <th className="p-2 text-right">Average Sentiment Score</th>
               </tr>
             </thead>
             <tbody>
               {data.map((post) => (
-                <tr key={post.Post_ID} className="border-b">
-                  <td className="p-2">{post.Post_ID}</td>
-                  <td className="p-2">{post.Post_Type}</td>
-                  <td className="p-2">{post.Date_Posted}</td>
+                <tr key={post.post_id} className="border-b">
+                  <td className="p-2">{post._id}</td>
+                  <td className="p-2">{post.post_type}</td>
+                  <td className="p-2">{post.date}</td>
                   <td className="p-2 text-right">
-                    {post.Likes.toLocaleString()}
+                    {post.likes.toLocaleString()}
                   </td>
                   <td className="p-2 text-right">
-                    {post.Shares.toLocaleString()}
+                    {post.shares.toLocaleString()}
                   </td>
                   <td className="p-2 text-right">
-                    {post.Comments.toLocaleString()}
+                    {post.comments.toLocaleString()}
                   </td>
                   <td className="p-2 text-right">
-                    {(
-                      ((post.Likes + post.Shares + post.Comments) /
-                        (post.Likes + post.Shares + post.Comments)) *
-                      100
-                    ).toFixed(1)}
-                    %
+                    {post.avg_sentiment_score.toFixed(2)}
                   </td>
                 </tr>
               ))}
@@ -413,57 +358,111 @@ const DataGrid = ({ data }) => {
 
 // Main Dashboard Component
 const Dashboard = () => {
+
+  const [mockPosts, setMockPosts] = useState([]); 
   const [state, setState] = useState({
-    posts: mockPosts,
-    dateRange: ["2024-01-01", "2024-03-31"],
+    posts: [], 
+    dateRange: ["2024-01-01", "2025-03-31"],
     selectedPostTypes: "all",
     search: "",
   });
 
-  const filteredPosts = useMemo(() => {
-    return mockPosts.filter((post) => {
+  // Fetch data from API and update both mockPosts and state.posts
+  const fetchDataFromAPI = async () => {
+    try {
+      const response = await fetch(SummaryApi.FetchData.url, {
+        method: SummaryApi.FetchData.method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      // console.log("Fetched data:", data);
+      setMockPosts(data); 
+      setState((prevState) => ({ ...prevState, posts: data }));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  // Fetch data when the component mounts
+  useEffect(() => {
+    fetchDataFromAPI();
+  }, []);
+
+  // Filter posts based on date range, type, and search criteria
+  
+  const [filteredPosts, setFilteredPosts] = useState([]);
+
+  useEffect(() => {
+    console.log('Filtering with:', state.dateRange, state.selectedPostTypes, state.search);
+    console.log('Posts:', state.posts); // Log the posts to see their structure
+
+    const newFilteredPosts = state.posts.filter((post) => {
       const withinDateRange =
-        post.Date_Posted >= state.dateRange[0] &&
-        post.Date_Posted <= state.dateRange[1];
+        post.date >= state.dateRange[0] && post.date <= state.dateRange[1];
       const matchesType =
-        state.selectedPostTypes === "all" ||
-        post.Post_Type === state.selectedPostTypes;
+        state.selectedPostTypes === 'all' ||
+        post.post_type === state.selectedPostTypes;
       const matchesSearch = state.search
-        ? post.Post_ID.toLowerCase().includes(state.search.toLowerCase()) ||
-          post.Post_Type.toLowerCase().includes(state.search.toLowerCase())
+        ? post.post_id.toLowerCase().includes(state.search.toLowerCase()) ||
+          post.post_type.toLowerCase().includes(state.search.toLowerCase())
         : true;
+
+      console.log(`Post ${post.post_id} matches filtering criteria?`, withinDateRange, matchesType, matchesSearch);
+
       return withinDateRange && matchesType && matchesSearch;
     });
-  }, [state.dateRange, state.selectedPostTypes, state.search]);
 
+    setFilteredPosts(newFilteredPosts);
+  }, [state.posts, state.dateRange, state.selectedPostTypes, state.search]); // Re-run the effect when any of these change
+
+  // Now you can use filteredPosts in your component
+  // console.log('filteredPosts', filteredPosts);
+
+
+  // Aggregated data for engagement summary and type comparison
   const aggregatedData = useMemo(() => {
     const postCounts = {
       Reel: 0,
       Carousel: 0,
       Static: 0,
     };
-
+  
     const totalEngagement = {
       Reel: { likes: 0, shares: 0, comments: 0, count: 0 },
       Carousel: { likes: 0, shares: 0, comments: 0, count: 0 },
       Static: { likes: 0, shares: 0, comments: 0, count: 0 },
     };
-
+  
     let totals = { likes: 0, shares: 0, comments: 0 };
-
+  
     // Process filtered posts
+    console.log("filteredPosts", filteredPosts);
     filteredPosts.forEach((post) => {
-      postCounts[post.Post_Type]++;
-      totalEngagement[post.Post_Type].likes += post.Likes;
-      totalEngagement[post.Post_Type].shares += post.Shares;
-      totalEngagement[post.Post_Type].comments += post.Comments;
-      totalEngagement[post.Post_Type].count++;
-
-      totals.likes += post.Likes;
-      totals.shares += post.Shares;
-      totals.comments += post.Comments;
+      console.log("post", post);
+  
+      // Check if post type exists in totalEngagement, initialize if missing
+      if (!totalEngagement[post.post_type]) {
+        totalEngagement[post.post_type] = { likes: 0, shares: 0, comments: 0, count: 0 };
+      }
+  
+      postCounts[post.post_type]++;
+      totalEngagement[post.post_type].likes += post.likes;
+      totalEngagement[post.post_type].shares += post.shares;
+      totalEngagement[post.post_type].comments += post.comments;
+      totalEngagement[post.post_type].count++;
+  
+      totals.likes += post.likes;
+      totals.shares += post.shares;
+      totals.comments += post.comments;
     });
-
+  
     // Calculate averages and trends
     const calculateEngagementRate = (type) => {
       if (totalEngagement[type].count === 0) return 0;
@@ -473,26 +472,26 @@ const Dashboard = () => {
         totalEngagement[type].comments;
       return (total / (totalEngagement[type].count * 3)) * 100;
     };
-
+  
     // Prepare chart data
     const performanceData = [];
     const dateMap = new Map();
-
+  
     filteredPosts.forEach((post) => {
-      const date = post.Date_Posted;
+      const date = post.date;
       if (!dateMap.has(date)) {
         dateMap.set(date, { date, likes: 0, shares: 0, comments: 0 });
       }
       const dayData = dateMap.get(date);
-      dayData.likes += post.Likes;
-      dayData.shares += post.Shares;
-      dayData.comments += post.Comments;
+      dayData.likes += post.likes;
+      dayData.shares += post.shares;
+      dayData.comments += post.comments;
     });
-
+  
     const sortedDates = Array.from(dateMap.values()).sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     );
-
+  
     return {
       postDistribution: Object.entries(postCounts).map(([name, value]) => ({
         name,
@@ -513,6 +512,9 @@ const Dashboard = () => {
       totals,
     };
   }, [filteredPosts]);
+  
+
+
 
   const handleRefresh = () => {
     // In a real app, this would fetch new data from the API
@@ -522,15 +524,15 @@ const Dashboard = () => {
   const handleExport = () => {
     // Create CSV content
     const csvContent = [
-      ["Post ID", "Type", "Date", "Likes", "Shares", "Comments"].join(","),
+      ["Post ID", "Type", "Date", "likes", "shares", "comments"].join(","),
       ...filteredPosts.map((post) =>
         [
-          post.Post_ID,
-          post.Post_Type,
-          post.Date_Posted,
-          post.Likes,
-          post.Shares,
-          post.Comments,
+          post._id,
+          post.post_type,
+          post.date,
+          post.likes,
+          post.shares,
+          post.comments,
         ].join(",")
       ),
     ].join("\n");
@@ -569,9 +571,8 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-          scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
-        }`}>
+        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
+          }`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
           <nav className="flex items-center justify-between">
             <Link
@@ -608,17 +609,17 @@ const Dashboard = () => {
             onExport={handleExport}
           />
 
-          <PerformanceCards
+          {/* <PerformanceCards
             data={{
               postDistribution: aggregatedData.postDistribution,
               engagementSummary: aggregatedData.engagementSummary,
               totals: aggregatedData.totals,
             }}
-          />
+          /> */}
 
-          <PerformanceChart data={aggregatedData.performanceData} />
+          {/* <PerformanceChart data={aggregatedData.performanceData} /> */}
 
-          <TypeComparisonChart data={aggregatedData.typeComparison} />
+          {/* <TypeComparisonChart data={aggregatedData.typeComparison} /> */}
 
           <DataGrid data={filteredPosts} />
         </motion.div>

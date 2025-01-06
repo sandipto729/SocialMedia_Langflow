@@ -8,7 +8,7 @@ import Footer from "../components/layout/Footer";
 const Home = () => {
   return (
     <div className="min-h-screen bg-gray-50">
-      <Header />
+      {/* <Header /> */}
       <main>
         <Hero id="hero" />
         <Features id='features'/>
