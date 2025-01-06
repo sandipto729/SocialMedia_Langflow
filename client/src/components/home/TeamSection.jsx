@@ -5,51 +5,41 @@ import { Linkedin, Github, GraduationCap } from "lucide-react";
 const TeamSection = () => {
   const team = [
     {
-      name: "Chahat Kesharwani",
-      role: "Designer & Developer",
+      name: "Abir Roy",
+      role: "Fullstack and Blockchain Developer",
       image:
-        "https://media.licdn.com/dms/image/v2/D4D03AQGYfizBcQGVXA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1698137364469?e=1741219200&v=beta&t=R7fzAqHEFVmY0NXMemIuDu7LgzD5RFz3BP3rUcy1mS0",
+        "https://media.licdn.com/dms/image/v2/D4E03AQGIDDxeS4AwTA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1715072661288?e=1741824000&v=beta&t=g7tgF58cjeFM_P5k1iYbvS2ELxbCbf0q-ac0o2q3zy4",
       graduationYear: "2027",
-      college: "NIT Jalandhar",
-      linkedin: "https://linkedin.com/in/chahatkesharwani/",
-      github: "https://github.com/chahatkesh",
+      college: "NIT Durgapur",
+      linkedin: "https://www.linkedin.com/in/abir-roy-21b3052aa/",
+      github: "https://github.com/roy-abir05",
     },
     {
-      name: "Davinder Singh",
-      role: "Fullstack Developer",
+      name: "Sandipto Roy",
+      role: "Fullstack and WEB3 Developer",
       image:
-        "https://media.licdn.com/dms/image/v2/D4E03AQFQ0sZTcyVDMg/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1726599571777?e=1741219200&v=beta&t=r-OCtXZFVt4Iars1N_D5_iH53FjUnZpLkp1wDbwQUs0",
+        "https://res.cloudinary.com/dodpgohuc/image/upload/v1730047709/cerxkkbkdfqygshhdfpo.jpg",
       graduationYear: "2027",
-      college: "NIT Jalandhar",
-      linkedin: "https://www.linkedin.com/in/davinder-singh-913541302/",
-      github: "https://github.com/Davinder1436",
+      college: "NIT Durgapur",
+      linkedin: "https://www.linkedin.com/in/sandipto-roy-675600277/",
+      github: "https://github.com/sandipto729",
     },
     {
-      name: "Rishi Ahuja",
-      role: "Langflow Developer",
+      name: "Ankit Roy",
+      role: "Fullstack and AI Developer",
       image:
-        "https://media.licdn.com/dms/image/v2/D4E03AQG87n2sers9aA/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1725363814807?e=1741219200&v=beta&t=3SBlI7ohn1NqqsZLGnAyFcBNDFNP5SwryZUSFENsJS8",
-      graduationYear: "2028",
-      college: "NIT Jalandhar",
-      linkedin: "https://www.linkedin.com/in/rishi-ahuja-b1a224310/",
-      github: "https://github.com/rishiahuja",
-    },
-    {
-      name: "Vatsal Khanna",
-      role: "ML Developer",
-      image:
-        "https://media.licdn.com/dms/image/v2/D4E03AQGBwIJdp-bJeQ/profile-displayphoto-shrink_800_800/profile-displayphoto-shrink_800_800/0/1728579143693?e=1741219200&v=beta&t=L0B61qKKRKdE0QuTzfnsxGG81y3LLmqpW0eM2L43nFM",
+        "https://media.licdn.com/dms/image/v2/D5635AQETRForTT4kog/profile-framedphoto-shrink_800_800/profile-framedphoto-shrink_800_800/0/1720361252276?e=1736794800&v=beta&t=pQ65bhFiYbLiXNmEK7w8007x2ER6bi3eBo9wyEg5d_Q",
       graduationYear: "2027",
-      college: "NIT Jalandhar",
-      linkedin: "https://www.linkedin.com/in/vatsalkhanna/",
-      github: "https://github.com/VatsalKhanna5",
-    },
+      college: "NIT Durgapur",
+      linkedin: "https://www.linkedin.com/in/ankit-roy-04349421a/",
+      github: "https://github.com",
+    }
   ];
 
   return (
     <section
       id="team"
-      className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white">
+      className="py-20 px-4 bg-gradient-to-b from-gray-50 to-white m-[auto]">
       <div className="max-w-7xl mx-auto">
         <motion.div
           className="text-center mb-16"
@@ -64,7 +54,7 @@ const TeamSection = () => {
             expertise in development, data science, and design
           </p>
         </motion.div>
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {team.map((member, index) => (
             <motion.div
               key={index}
