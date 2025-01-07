@@ -17,21 +17,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-  PieChart,
-  Pie,
-  Cell,
-  BarChart,
-  Bar,
-} from "recharts";
+
 import {
   Download,
   RefreshCw,
@@ -57,6 +43,7 @@ const DateRangePicker = ({
 }) => {
   return (
     <div className="flex items-center gap-2">
+      <span className="text-muted-foreground">Date-Range : </span>
       <div className="flex items-center gap-2">
         <input
           type="date"
@@ -155,29 +142,29 @@ const PerformanceCards = ({ data }) => {
   const postDistributionSeries = data.postDistribution.map(item => item.value);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-      <Card>
+    <>
+    <Card>
         <CardHeader>
-          <CardTitle>Total Engagement</CardTitle>
+          <CardTitle>Total Engagement Statistics</CardTitle>
           <CardDescription>All-time totals</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
             <div className="grid grid-cols-3 gap-4">
-              <div>
-                <p className="text-sm text-muted-foreground">likes</p>
+              <div className="bg-green-500 text-white p-2 rounded">
+                <p className="text-sm">Likes</p>
                 <p className="text-2xl font-bold">
                   {data.totals.likes.toLocaleString()}
                 </p>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">shares</p>
+              <div className="bg-blue-500 text-white p-2 rounded">
+                <p className="text-sm">Shares</p>
                 <p className="text-2xl font-bold">
                   {data.totals.shares.toLocaleString()}
                 </p>
               </div>
-              <div>
-                <p className="text-sm text-muted-foreground">comments</p>
+              <div className="bg-yellow-600 text-white p-2 rounded">
+                <p className="text-sm">Comments</p>
                 <p className="text-2xl font-bold">
                   {data.totals.comments.toLocaleString()}
                 </p>
@@ -186,6 +173,7 @@ const PerformanceCards = ({ data }) => {
           </div>
         </CardContent>
       </Card>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
 
       <Card>
         <CardHeader>
@@ -231,6 +219,7 @@ const PerformanceCards = ({ data }) => {
 
       
     </div>
+    </>
   );
 };
 
@@ -317,11 +306,40 @@ const TypeComparisonChart = ({ data }) => {
 const PerformanceChart = ({ data }) => {
   const chartOptions = {
     chart: {
-      type: 'line',
+      type: 'area',
       height: 400,
+    },
+    fill: {
+      gradient: {
+        opacityFrom: 0.4,
+        opacityTo: 0.1,
+        shadeIntensity: 1,
+        stops: [0, 100],
+        type: 'vertical',
+      },
+      type: 'gradient',
+    },
+    grid: {
+      borderColor: '#55596e',
+      yaxis: {
+        lines: {
+          show: true,
+        },
+      },
+      xaxis: {
+        lines: {
+          show: true,
+        },
+      },
+    },
+    markers: {
+      size: 2,
+      strokeColors: '#1b2635',
+      strokeWidth: 1,
     },
     stroke: {
       curve: 'smooth',
+      width: 2,
     },
     xaxis: {
       type: 'datetime',
@@ -365,7 +383,7 @@ const PerformanceChart = ({ data }) => {
         <Chart
           options={chartOptions}
           series={chartSeries}
-          type="line"
+          type="area"
           height={400}
         />
       </CardContent>
