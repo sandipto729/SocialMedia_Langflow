@@ -3,7 +3,7 @@ const connectAstraDB = require('./../../config/astraDb');
 const getData = async (req, res) => {
     try {
         const db = await connectAstraDB();
-        const collection = 'socialmedia';
+        const collection = 'socialmedia2';
 
         // Use the collection() method to access the collection
         const cursor = await db.collection(collection).find();
