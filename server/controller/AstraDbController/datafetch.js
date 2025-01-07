@@ -1,6 +1,9 @@
 const connectAstraDB = require("./../../config/astraDb")
 
 const getData = async (req, res) => {
+    try {
+        const db = await connectAstraDB();
+        const collection = 'socialmedia2';
 	try {
 		const db = await connectAstraDB()
 		const collection = "socialmedia2"
