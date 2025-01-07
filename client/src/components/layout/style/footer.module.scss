@@ -1,0 +1,136 @@
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 2rem;
+    background-color: #121212;
+    color: #f0f0f0;
+
+    &.dark-theme {
+        background-color: #181818;
+        color: #d4d4d4;
+    }
+}
+
+.leftContainer{
+    display: flex;
+    // flex-direction: column;
+    gap: 1rem;
+    width: 70%;
+}
+
+.leftContainer {
+    .grid {
+        margin-bottom: 1.5rem;
+
+        .logo {
+            max-width: 120px;
+            border-radius: 8px;
+        }
+
+        .description {
+            margin: 1rem 0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .socials {
+            display: flex;
+            gap: 1rem;
+
+            .iconLink {
+                color: #d4d4d4;
+                transition: color 0.3s ease;
+
+                &:hover {
+                    color: #00bcd4;
+                }
+            }
+        }
+    }
+
+    .gridTitle {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .gridLinks,
+    .gridContact {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .linkButton {
+            background: none;
+            border: none;
+            color: #00bcd4;
+            cursor: pointer;
+            transition: color 0.3s ease;
+
+            &:hover {
+                color: #f0f0f0;
+                text-decoration: underline;
+            }
+        }
+        button,p{
+            font-size: 0.9rem;
+        }
+    }
+}
+
+.rightContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+
+    .subscribeText {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    .inputContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+        font-size: medium;
+
+        .inputField {
+            flex: 1;
+            padding: 0.8rem;
+            border: 1px solid #333;
+            border-radius: 6px;
+            background-color: #121212;
+            color: #f0f0f0;
+            transition: border-color 0.3s ease;
+            font-size: small;
+
+            &::placeholder {
+                color: #888;
+            }
+
+            &:focus {
+                outline: none;
+                border-color: #00bcd4;
+            }
+        }
+
+        .subscribeButton {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            background-color: #00bcd4;
+            color: #121212;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: small;
+
+            &:hover {
+                background-color: #0097a7;
+            }
+        }
+    }
+}
