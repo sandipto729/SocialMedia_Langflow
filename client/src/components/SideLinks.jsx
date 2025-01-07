@@ -1,16 +1,22 @@
-import { ChartNoAxesCombined, ContactRound, UsersRound, Mail } from "lucide-react"
+import { ChartNoAxesCombined, ContactRound, UsersRound, CircleDotDashed } from "lucide-react"
 import { HashLink } from "react-router-hash-link"
 
 const SideLinks = () => {
 
     const links = [{
         name: "Home",
-        link: '/',
+        link: '/#',
         icon: <ChartNoAxesCombined className="text-white group-hover/link:text-secondary" size={'30'} />,
-    }, {
+    },
+    {
         name: 'Dashboard',
         link: '/dashboard',
         icon: <ContactRound className="text-white group-hover/link:text-secondary" size={'30'} />,
+    },
+    {
+        name: 'Features',
+        link: '/#features',
+        icon: <CircleDotDashed className="text-white group-hover/link:text-secondary" size={'30'}/>
     },
     {
         name: 'Team',

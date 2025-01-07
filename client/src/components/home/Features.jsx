@@ -18,8 +18,9 @@ const Features = () => {
   ];
 
   return (
-    <section id="highlights" className="py-20 px-4 bg-black text-white">
+    <section id="features" className="py-20 px-4 bg-black text-white">
       <div>
+        <div className="w-full mb-10 text-center text-white font-extrabold text-5xl 2xl:text-6xl">Why Choose Us</div>
         <div className="w-full h-30vh flex items-center justify-evenly">
           {
             features.map((item) => (

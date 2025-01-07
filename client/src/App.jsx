@@ -13,8 +13,10 @@ const App = () => {
     <>
       <ToastContainer />
       <div className="flex">
-        <Sidebar />
-        <div className="flex-1">
+        <div className="fixed w-[18vw] top-0 z-50">
+          <Sidebar />
+        </div>
+        <div className="flex-1 overflow-auto ml-[18vw]">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/home" element={<Home />} />
