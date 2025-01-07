@@ -6,18 +6,24 @@ import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
 import ChatClient from "./pages/EnhancedChatClient";
 import Login from './Authentication/Login/Login'
+import Sidebar from './components/Sidebar'
 
 const App = () => {
   return (
     <>
       <ToastContainer />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/chat" element={<ChatClient />} />
-        <Route path="/login" element={<Login />} />
-      </Routes>
+      <div className="flex">
+        <Sidebar />
+        <div className="flex-1">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/chat" element={<ChatClient />} />
+            <Route path="/login" element={<Login />} />
+          </Routes>
+        </div>
+      </div>
     </>
   );
 };
