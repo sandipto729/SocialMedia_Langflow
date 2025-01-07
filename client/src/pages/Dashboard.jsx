@@ -20,9 +20,6 @@ import {
 
 import {
   Download,
-  RefreshCw,
-  TrendingUp,
-  TrendingDown,
   Search,
   Film,
   Image as ImageIcon,
@@ -69,11 +66,10 @@ const DashboardHeader = ({
   setDateRange,
   selectedTypes,
   setSelectedTypes,
-  onRefresh,
   onExport,
 }) => {
   return (
-    <div className="p-4 space-y-4 bg-card rounded-lg shadow-sm">
+    <div className="p-4 space-y-4 bg-card rounded-lg shadow-sm z-10">
       <div className="flex flex-col md:flex-row justify-between gap-4">
         <DateRangePicker
           startDate={dateRange[0]}
@@ -88,20 +84,18 @@ const DashboardHeader = ({
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Post Type" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="z-10">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="reel">Reel</SelectItem>
               <SelectItem value="carousel">Carousel</SelectItem>
-              <SelectItem value="static_image">Static Iamge</SelectItem>
+              <SelectItem value="static_image">Static Image</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="icon" onClick={onRefresh}>
-            <RefreshCw className="h-4 w-4" />
-          </Button>
           <Button variant="outline" size="icon" onClick={onExport}>
             <Download className="h-4 w-4" />
           </Button>
         </div>
+        
       </div>
     </div>
   );
@@ -143,6 +137,8 @@ const PerformanceCards = ({ data }) => {
 
   return (
     <>
+    
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
     <Card>
         <CardHeader>
           <CardTitle>Total Engagement Statistics</CardTitle>
@@ -150,7 +146,7 @@ const PerformanceCards = ({ data }) => {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 gap-4">
               <div className="bg-green-500 text-white p-2 rounded">
                 <p className="text-sm">Likes</p>
                 <p className="text-2xl font-bold">
@@ -173,8 +169,6 @@ const PerformanceCards = ({ data }) => {
           </div>
         </CardContent>
       </Card>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
-
       <Card>
         <CardHeader>
           <CardTitle>Post Distribution</CardTitle>
@@ -190,32 +184,6 @@ const PerformanceCards = ({ data }) => {
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Engagement Summary</CardTitle>
-          <CardDescription>Average engagement by type</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            {data.engagementSummary.map((item, index) => (
-              <div key={index} className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  {getPostTypeIcon(item.type)}
-                  <span>{item.type}</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span>{item.rate}%</span>
-                  {item.trend > 0 ? (
-                    <TrendingUp className="h-4 w-4 text-green-500" />
-                  ) : (
-                    <TrendingDown className="h-4 w-4 text-red-500" />
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
 
       
     </div>
@@ -319,21 +287,9 @@ const PerformanceChart = ({ data }) => {
       },
       type: 'gradient',
     },
-    grid: {
-      borderColor: '#55596e',
-      yaxis: {
-        lines: {
-          show: true,
-        },
-      },
-      xaxis: {
-        lines: {
-          show: true,
-        },
-      },
-    },
     markers: {
-      size: 2,
+      shape: 'circle',
+      size: 1,
       strokeColors: '#1b2635',
       strokeWidth: 1,
     },
@@ -414,10 +370,11 @@ const DataGrid = ({ data }) => {
                 <th className="p-2 text-left">Post ID</th>
                 <th className="p-2 text-left">Type</th>
                 <th className="p-2 text-left">Date</th>
-                <th className="p-2 text-right">likes</th>
-                <th className="p-2 text-right">shares</th>
-                <th className="p-2 text-right">comments</th>
+                <th className="p-2 text-right">Likes</th>
+                <th className="p-2 text-right">Shares</th>
+                <th className="p-2 text-right">Comments</th>
                 <th className="p-2 text-right">Average Sentiment Score</th>
+                <th className="p-2 text-right">Name</th>
               </tr>
             </thead>
             <tbody>
@@ -438,6 +395,7 @@ const DataGrid = ({ data }) => {
                   <td className="p-2 text-right">
                     {post.avg_sentiment_score.toFixed(2)}
                   </td>
+                  <td className="p-2 text-right">{post.name}</td>
                 </tr>
               ))}
             </tbody>
@@ -660,28 +618,9 @@ const Dashboard = () => {
     setChatExpanded(true);
   };
 
+
   return (
     <div className="min-h-screen bg-gray-50">
-      <header
-        className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
-          }`}>
-        <div className="max-w-7xl mx-auto px-4 py-4">
-          <nav className="flex items-center justify-between">
-            <Link
-              to={"/"}
-              className="text-2xl font-bold text-primary-600 cursor-pointer flex gap-4 justify-center items-center">
-              <img src="/insightly.svg" alt="Logo" className="h-10" />
-            </Link>
-            <div className="hidden md:flex items-center gap-8">
-              <Button
-                className="bg-primary-600 text-white px-6 py-2 rounded-lg hover:bg-primary-700 transition-colors flex items-center gap-2"
-                onClick={handleAiButtonClick}>
-                Get Answers with Ai!
-              </Button>
-            </div>
-          </nav>
-        </div>
-      </header>
       <div className="min-h-screen bg-background p-4 md:p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -697,7 +636,6 @@ const Dashboard = () => {
             setSelectedTypes={(types) =>
               setState((prev) => ({ ...prev, selectedPostTypes: types }))
             }
-            onRefresh={handleRefresh}
             onExport={handleExport}
           />
 

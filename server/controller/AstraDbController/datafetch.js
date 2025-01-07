@@ -1,9 +1,7 @@
 const connectAstraDB = require("./../../config/astraDb")
 
 const getData = async (req, res) => {
-    try {
-        const db = await connectAstraDB();
-        const collection = 'socialmedia2';
+    
 	try {
 		const db = await connectAstraDB()
 		const collection = "socialmedia2"
@@ -24,5 +22,6 @@ const getData = async (req, res) => {
 		res.status(500).json({ error: "Failed to fetch data" })
 	}
 }
+
 
 module.exports = getData
