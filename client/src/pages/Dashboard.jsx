@@ -46,7 +46,7 @@ const DateRangePicker = ({
           type="date"
           value={startDate}
           onChange={(e) => onStartDateChange(e.target.value)}
-          className="px-3 py-2 border rounded-md bg-background"
+          className="px-3 py-2 border rounded-md bg-[#22252e] accent-white"
         />
       </div>
       <span className="text-muted-foreground">to</span>
@@ -54,7 +54,7 @@ const DateRangePicker = ({
         type="date"
         value={endDate}
         onChange={(e) => onEndDateChange(e.target.value)}
-        className="px-3 py-2 border rounded-md bg-background"
+        className="px-3 py-2 border rounded-md bg-[#22252e] accent-white"
       />
     </div>
   );
@@ -81,21 +81,21 @@ const DashboardHeader = ({
           <Select
             value={selectedTypes}
             onValueChange={(value) => setSelectedTypes(value)}>
-            <SelectTrigger className="w-[180px]">
+            <SelectTrigger className="w-[180px] bg-[#22252e]">
               <SelectValue placeholder="Post Type" />
             </SelectTrigger>
-            <SelectContent className="z-10">
+            <SelectContent className="z-10 text-white bg-[#22252e]">
               <SelectItem value="all">All Types</SelectItem>
               <SelectItem value="reel">Reel</SelectItem>
               <SelectItem value="carousel">Carousel</SelectItem>
               <SelectItem value="static_image">Static Image</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="icon" onClick={onExport}>
-            <Download className="h-4 w-4" />
+          <Button variant="outline" size="icon" onClick={onExport} className="hover:bg-secondary">
+            <Download className="h-4 w-4 text-black" />
           </Button>
         </div>
-        
+
       </div>
     </div>
   );
@@ -137,56 +137,56 @@ const PerformanceCards = ({ data }) => {
 
   return (
     <>
-    
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
-    <Card>
-        <CardHeader>
-          <CardTitle>Total Engagement Statistics</CardTitle>
-          <CardDescription>All-time totals</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <div className="grid grid-cols-1 gap-4">
-              <div className="bg-green-500 text-white p-2 rounded">
-                <p className="text-sm">Likes</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.likes.toLocaleString()}
-                </p>
-              </div>
-              <div className="bg-blue-500 text-white p-2 rounded">
-                <p className="text-sm">Shares</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.shares.toLocaleString()}
-                </p>
-              </div>
-              <div className="bg-yellow-600 text-white p-2 rounded">
-                <p className="text-sm">Comments</p>
-                <p className="text-2xl font-bold">
-                  {data.totals.comments.toLocaleString()}
-                </p>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mb-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Total Engagement Statistics</CardTitle>
+            <CardDescription>All-time totals</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 gap-4">
+                <div className="bg-gradient-to-r from-green-600/20 to-green-500/70 text-white p-2 rounded">
+                  <p className="text-sm">Likes</p>
+                  <p className="text-2xl font-bold">
+                    {data.totals.likes.toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-r from-blue-600/20 to-blue-500/70 text-white p-2 rounded">
+                  <p className="text-sm">Shares</p>
+                  <p className="text-2xl font-bold">
+                    {data.totals.shares.toLocaleString()}
+                  </p>
+                </div>
+                <div className="bg-gradient-to-r from-yellow-500/20 to-yellow-400/70 text-white p-2 rounded">
+                  <p className="text-sm">Comments</p>
+                  <p className="text-2xl font-bold">
+                    {data.totals.comments.toLocaleString()}
+                  </p>
+                </div>
               </div>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Post Distribution</CardTitle>
-          <CardDescription>Breakdown by post type</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Chart
-            options={postDistributionOptions}
-            series={postDistributionSeries}
-            type="pie"
-            height={200}
-          />
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>Post Distribution</CardTitle>
+            <CardDescription>Breakdown by post type</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Chart
+              options={postDistributionOptions}
+              series={postDistributionSeries}
+              type="pie"
+              height={200}
+            />
+          </CardContent>
+        </Card>
 
 
-      
-    </div>
+
+      </div>
     </>
   );
 };
@@ -409,9 +409,9 @@ const DataGrid = ({ data }) => {
 // Main Dashboard Component
 const Dashboard = () => {
 
-  const [mockPosts, setMockPosts] = useState([]); 
+  const [mockPosts, setMockPosts] = useState([]);
   const [state, setState] = useState({
-    posts: [], 
+    posts: [],
     dateRange: ["2024-01-01", "2025-03-31"],
     selectedPostTypes: "all",
     search: "",
@@ -433,7 +433,7 @@ const Dashboard = () => {
 
       const data = await response.json();
       // console.log("Fetched data:", data);
-      setMockPosts(data); 
+      setMockPosts(data);
       setState((prevState) => ({ ...prevState, posts: data }));
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -446,7 +446,7 @@ const Dashboard = () => {
   }, []);
 
   // Filter posts based on date range, type, and search criteria
-  
+
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
@@ -461,7 +461,7 @@ const Dashboard = () => {
         post.post_type === state.selectedPostTypes;
       const matchesSearch = state.search
         ? post.post_id.toLowerCase().includes(state.search.toLowerCase()) ||
-          post.post_type.toLowerCase().includes(state.search.toLowerCase())
+        post.post_type.toLowerCase().includes(state.search.toLowerCase())
         : true;
 
       console.log(`Post ${post.post_id} matches filtering criteria?`, withinDateRange, matchesType, matchesSearch);
@@ -483,36 +483,36 @@ const Dashboard = () => {
       carousel: 0,
       static_image: 0,
     };
-  
+
     const totalEngagement = {
       reel: { likes: 0, shares: 0, comments: 0, count: 0 },
       carousel: { likes: 0, shares: 0, comments: 0, count: 0 },
       static_image: { likes: 0, shares: 0, comments: 0, count: 0 },
     };
-  
+
     let totals = { likes: 0, shares: 0, comments: 0 };
-  
+
     // Process filtered posts
     console.log("filteredPosts", filteredPosts);
     filteredPosts.forEach((post) => {
       console.log("post", post);
-  
+
       // Check if post type exists in totalEngagement, initialize if missing
       if (!totalEngagement[post.post_type]) {
         totalEngagement[post.post_type] = { likes: 0, shares: 0, comments: 0, count: 0 };
       }
-  
+
       postCounts[post.post_type]++;
       totalEngagement[post.post_type].likes += post.likes;
       totalEngagement[post.post_type].shares += post.shares;
       totalEngagement[post.post_type].comments += post.comments;
       totalEngagement[post.post_type].count++;
-  
+
       totals.likes += post.likes;
       totals.shares += post.shares;
       totals.comments += post.comments;
     });
-  
+
     // Calculate averages and trends
     const calculateEngagementRate = (type) => {
       if (totalEngagement[type].count === 0) return 0;
@@ -522,11 +522,11 @@ const Dashboard = () => {
         totalEngagement[type].comments;
       return (total / (totalEngagement[type].count * 3)) * 100;
     };
-  
+
     // Prepare chart data
     const performanceData = [];
     const dateMap = new Map();
-  
+
     filteredPosts.forEach((post) => {
       const date = post.date;
       if (!dateMap.has(date)) {
@@ -537,11 +537,11 @@ const Dashboard = () => {
       dayData.shares += post.shares;
       dayData.comments += post.comments;
     });
-  
+
     const sortedDates = Array.from(dateMap.values()).sort(
       (a, b) => new Date(a.date) - new Date(b.date)
     );
-  
+
     return {
       postDistribution: Object.entries(postCounts).map(([name, value]) => ({
         name,
@@ -562,7 +562,7 @@ const Dashboard = () => {
       totals,
     };
   }, [filteredPosts]);
-  
+
 
 
 
@@ -621,7 +621,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="min-h-screen bg-background p-4 md:p-6">
+      <div className="min-h-screen bg-black p-4 md:p-6 text-white">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -657,9 +657,7 @@ const Dashboard = () => {
           setIsExpanded={setChatExpanded}
         />
       </div>
-      <div className="pt-12">
-        <Footer />
-      </div>
+      <Footer />
     </div>
   );
 };
