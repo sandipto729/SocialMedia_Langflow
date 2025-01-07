@@ -46,6 +46,8 @@ import Footer from "@/components/layout/Footer";
 import EnhancedChatClient from "./EnhancedChatClient";
 import SummaryApi from "../common";
 
+import Chart from "react-apexcharts";
+
 // DateRangePicker Component
 const DateRangePicker = ({
   startDate,
@@ -119,185 +121,257 @@ const DashboardHeader = ({
 };
 
 // PerformanceCards Component
-// const PerformanceCards = ({ data }) => {
-//   const COLORS = [
-//     "hsl(var(--chart-1))",
-//     "hsl(var(--chart-2))",
-//     "hsl(var(--chart-3))",
-//   ];
+const PerformanceCards = ({ data }) => {
+  const COLORS = [
+    "hsl(var(--chart-1))",
+    "hsl(var(--chart-2))",
+    "hsl(var(--chart-3))",
+  ];
 
-//   const getPostTypeIcon = (type) => {
-//     switch (type) {
-//       case "Reel":
-//         return <Film className="h-4 w-4" />;
-//       case "Carousel":
-//         return <Images className="h-4 w-4" />;
-//       case "Static":
-//         return <ImageIcon className="h-4 w-4" />;
-//       default:
-//         return null;
-//     }
-//   };
+  const getPostTypeIcon = (type) => {
+    switch (type) {
+      case "Reel":
+        return <Film className="h-4 w-4" />;
+      case "Carousel":
+        return <Images className="h-4 w-4" />;
+      case "Static":
+        return <ImageIcon className="h-4 w-4" />;
+      default:
+        return null;
+    }
+  };
 
-//   return (
-//     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
-//       <Card>
-//         <CardHeader>
-//           <CardTitle>Post Distribution</CardTitle>
-//           <CardDescription>Breakdown by post type</CardDescription>
-//         </CardHeader>
-//         <CardContent>
-//           <ResponsiveContainer width="100%" height={200}>
-//             <PieChart>
-//               <Pie
-//                 data={data.postDistribution}
-//                 dataKey="value"
-//                 nameKey="name"
-//                 cx="50%"
-//                 cy="50%"
-//                 outerRadius={80}
-//                 fill="hsl(var(--chart-1))">
-//                 {data.postDistribution.map((entry, index) => (
-//                   <Cell
-//                     key={`cell-${index}`}
-//                     fill={COLORS[index % COLORS.length]}
-//                   />
-//                 ))}
-//               </Pie>
-//               <Tooltip />
-//               <Legend />
-//             </PieChart>
-//           </ResponsiveContainer>
-//         </CardContent>
-//       </Card>
+  const postDistributionOptions = {
+    chart: {
+      type: 'pie',
+    },
+    labels: data.postDistribution.map(item => item.name),
+    colors: COLORS,
+    legend: {
+      position: 'bottom',
+    },
+  };
 
-//       <Card>
-//         <CardHeader>
-//           <CardTitle>Engagement Summary</CardTitle>
-//           <CardDescription>Average engagement by type</CardDescription>
-//         </CardHeader>
-//         <CardContent>
-//           <div className="space-y-4">
-//             {data.engagementSummary.map((item, index) => (
-//               <div key={index} className="flex items-center justify-between">
-//                 <div className="flex items-center gap-2">
-//                   {getPostTypeIcon(item.type)}
-//                   <span>{item.type}</span>
-//                 </div>
-//                 <div className="flex items-center gap-2">
-//                   <span>{item.engagement}%</span>
-//                   {item.trend > 0 ? (
-//                     <TrendingUp className="h-4 w-4 text-green-500" />
-//                   ) : (
-//                     <TrendingDown className="h-4 w-4 text-red-500" />
-//                   )}
-//                 </div>
-//               </div>
-//             ))}
-//           </div>
-//         </CardContent>
-//       </Card>
+  const postDistributionSeries = data.postDistribution.map(item => item.value);
 
-//       <Card>
-//         <CardHeader>
-//           <CardTitle>Total Engagement</CardTitle>
-//           <CardDescription>All-time totals</CardDescription>
-//         </CardHeader>
-//         <CardContent>
-//           <div className="space-y-4">
-//             <div className="grid grid-cols-3 gap-4">
-//               <div>
-//                 <p className="text-sm text-muted-foreground">likes</p>
-//                 <p className="text-2xl font-bold">
-//                   {data.totals.likes.toLocaleString()}
-//                 </p>
-//               </div>
-//               <div>
-//                 <p className="text-sm text-muted-foreground">shares</p>
-//                 <p className="text-2xl font-bold">
-//                   {data.totals.shares.toLocaleString()}
-//                 </p>
-//               </div>
-//               <div>
-//                 <p className="text-sm text-muted-foreground">comments</p>
-//                 <p className="text-2xl font-bold">
-//                   {data.totals.comments.toLocaleString()}
-//                 </p>
-//               </div>
-//             </div>
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// };
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Total Engagement</CardTitle>
+          <CardDescription>All-time totals</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-muted-foreground">likes</p>
+                <p className="text-2xl font-bold">
+                  {data.totals.likes.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">shares</p>
+                <p className="text-2xl font-bold">
+                  {data.totals.shares.toLocaleString()}
+                </p>
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">comments</p>
+                <p className="text-2xl font-bold">
+                  {data.totals.comments.toLocaleString()}
+                </p>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Post Distribution</CardTitle>
+          <CardDescription>Breakdown by post type</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <Chart
+            options={postDistributionOptions}
+            series={postDistributionSeries}
+            type="pie"
+            height={200}
+          />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Engagement Summary</CardTitle>
+          <CardDescription>Average engagement by type</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            {data.engagementSummary.map((item, index) => (
+              <div key={index} className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  {getPostTypeIcon(item.type)}
+                  <span>{item.type}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span>{item.rate}%</span>
+                  {item.trend > 0 ? (
+                    <TrendingUp className="h-4 w-4 text-green-500" />
+                  ) : (
+                    <TrendingDown className="h-4 w-4 text-red-500" />
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </CardContent>
+      </Card>
+
+      
+    </div>
+  );
+};
+
+
+
+//TypeComparisonChart Component
+
+const TypeComparisonChart = ({ data }) => {
+  const chartOptions = {
+    chart: {
+      type: 'bar',
+      height: 400,
+      stacked: true,
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        endingShape: 'rounded'
+      },
+    },
+    dataLabels: {
+      enabled: false
+    },
+    stroke: {
+      show: true,
+      width: 2,
+      colors: ['transparent']
+    },
+    xaxis: {
+      categories: data.map(item => item.type),
+    },
+    yaxis: {
+      title: {
+        text: 'Engagement'
+      }
+    },
+    fill: {
+      opacity: 1
+    },
+    tooltip: {
+      y: {
+        formatter: function (val) {
+          return val;
+        }
+      }
+    }
+  };
+
+  const chartSeries = [
+    {
+      name: 'Likes',
+      data: data.map(item => item.likes)
+    },
+    {
+      name: 'Shares',
+      data: data.map(item => item.shares)
+    },
+    {
+      name: 'Comments',
+      data: data.map(item => item.comments)
+    }
+  ];
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Post Type Comparison</CardTitle>
+        <CardDescription>Average engagement by post type</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Chart
+          options={chartOptions}
+          series={chartSeries}
+          type="bar"
+          height={400}
+        />
+      </CardContent>
+    </Card>
+  );
+};
 
 // PerformanceChart Component
-// const PerformanceChart = ({ data }) => {
-//   return (
-//     <Card className="mb-6">
-//       <CardHeader>
-//         <CardTitle>Post Performance Over Time</CardTitle>
-//         <CardDescription>Daily engagement metrics</CardDescription>
-//       </CardHeader>
-//       <CardContent>
-//         <ResponsiveContainer width="100%" height={400}>
-//           <LineChart data={data}>
-//             <CartesianGrid strokeDasharray="3 3" />
-//             <XAxis dataKey="date" />
-//             <YAxis />
-//             <Tooltip />
-//             <Legend />
-//             <Line
-//               type="monotone"
-//               dataKey="likes"
-//               stroke="hsl(var(--chart-1))"
-//               activeDot={{ r: 8 }}
-//             />
-//             <Line
-//               type="monotone"
-//               dataKey="shares"
-//               stroke="hsl(var(--chart-2))"
-//               activeDot={{ r: 8 }}
-//             />
-//             <Line
-//               type="monotone"
-//               dataKey="comments"
-//               stroke="hsl(var(--chart-3))"
-//               activeDot={{ r: 8 }}
-//             />
-//           </LineChart>
-//         </ResponsiveContainer>
-//       </CardContent>
-//     </Card>
-//   );
-// };
+const PerformanceChart = ({ data }) => {
+  const chartOptions = {
+    chart: {
+      type: 'line',
+      height: 400,
+    },
+    stroke: {
+      curve: 'smooth',
+    },
+    xaxis: {
+      type: 'datetime',
+      categories: data.map(item => item.date),
+    },
+    yaxis: {
+      title: {
+        text: 'Engagement',
+      },
+    },
+    tooltip: {
+      x: {
+        format: 'dd MMM yyyy',
+      },
+    },
+    colors: ['#FF4560', '#00E396', '#008FFB'],
+  };
 
-// TypeComparisonChart Component
-// const TypeComparisonChart = ({ data }) => {
-//   return (
-//     <Card className="mb-6">
-//       <CardHeader>
-//         <CardTitle>Post Type Comparison</CardTitle>
-//         <CardDescription>Average engagement by post type</CardDescription>
-//       </CardHeader>
-//       <CardContent>
-//         <ResponsiveContainer width="100%" height={400}>
-//           <BarChart data={data}>
-//             <CartesianGrid strokeDasharray="3 3" />
-//             <XAxis dataKey="type" />
-//             <YAxis />
-//             <Tooltip />
-//             <Legend />
-//             <Bar dataKey="likes" fill="hsl(var(--chart-1))" />
-//             <Bar dataKey="shares" fill="hsl(var(--chart-2))" />
-//             <Bar dataKey="comments" fill="hsl(var(--chart-3))" />
-//           </BarChart>
-//         </ResponsiveContainer>
-//       </CardContent>
-//     </Card>
-//   );
-// };
+  const chartSeries = [
+    {
+      name: 'Likes',
+      data: data.map(item => item.likes),
+    },
+    {
+      name: 'Shares',
+      data: data.map(item => item.shares),
+    },
+    {
+      name: 'Comments',
+      data: data.map(item => item.comments),
+    },
+  ];
+
+  return (
+    <Card className="mb-6">
+      <CardHeader>
+        <CardTitle>Post Performance Over Time</CardTitle>
+        <CardDescription>Daily engagement metrics</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Chart
+          options={chartOptions}
+          series={chartSeries}
+          type="line"
+          height={400}
+        />
+      </CardContent>
+    </Card>
+  );
+};
 
 // DataGrid Component
 const DataGrid = ({ data }) => {
@@ -429,15 +503,15 @@ const Dashboard = () => {
   // Aggregated data for engagement summary and type comparison
   const aggregatedData = useMemo(() => {
     const postCounts = {
-      Reel: 0,
-      Carousel: 0,
-      Static: 0,
+      reel: 0,
+      carousel: 0,
+      static_image: 0,
     };
   
     const totalEngagement = {
-      Reel: { likes: 0, shares: 0, comments: 0, count: 0 },
-      Carousel: { likes: 0, shares: 0, comments: 0, count: 0 },
-      Static: { likes: 0, shares: 0, comments: 0, count: 0 },
+      reel: { likes: 0, shares: 0, comments: 0, count: 0 },
+      carousel: { likes: 0, shares: 0, comments: 0, count: 0 },
+      static_image: { likes: 0, shares: 0, comments: 0, count: 0 },
     };
   
     let totals = { likes: 0, shares: 0, comments: 0 };
@@ -609,17 +683,16 @@ const Dashboard = () => {
             onExport={handleExport}
           />
 
-          {/* <PerformanceCards
+          <PerformanceCards
             data={{
               postDistribution: aggregatedData.postDistribution,
               engagementSummary: aggregatedData.engagementSummary,
               totals: aggregatedData.totals,
             }}
-          /> */}
+          />
 
-          {/* <PerformanceChart data={aggregatedData.performanceData} /> */}
-
-          {/* <TypeComparisonChart data={aggregatedData.typeComparison} /> */}
+          <TypeComparisonChart data={aggregatedData.typeComparison} />
+          <PerformanceChart data={aggregatedData.performanceData} />
 
           <DataGrid data={filteredPosts} />
         </motion.div>
