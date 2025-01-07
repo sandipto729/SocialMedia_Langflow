@@ -570,7 +570,7 @@ const Dashboard = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <header
+      {/* <header
         className={`fixed top-0 w-full z-50 transition-all duration-300 ${scrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
           }`}>
         <div className="max-w-7xl mx-auto px-4 py-4">
@@ -589,7 +589,7 @@ const Dashboard = () => {
             </div>
           </nav>
         </div>
-      </header>
+      </header> */}
       <div className="min-h-screen bg-background p-4 md:p-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
