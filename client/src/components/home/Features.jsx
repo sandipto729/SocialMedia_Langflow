@@ -20,7 +20,8 @@ const Features = () => {
   return (
     <section id="features" className="py-20 px-4 bg-black text-white">
       <div>
-        <div className="w-full mb-10 text-center text-white font-extrabold text-5xl 2xl:text-6xl">Why Choose Us</div>
+        <div className="w-full mb-7 text-center text-white font-extrabold text-5xl 2xl:text-6xl">Why Choose Us</div>
+        <div className="w-[75%] mx-auto mb-16 text-center text-xl text-gray-300">Supercharge your social media performance with data-backed insights and AI-powered analysis, designed to help you grow and engage your audience more effectively</div>
         <div className="w-full h-30vh flex items-center justify-evenly">
           {
             features.map((item) => (
