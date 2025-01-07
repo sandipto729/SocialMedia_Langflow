@@ -29,7 +29,7 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
     if (isExpanded && !welcomeMessageShownRef.current) {
       setMessages([
         {
-          text: "Hello, I am your AI assistant to help you with your social media analytics",
+          text: "Hello there! How can I help you today?",
           type: "response",
         },
       ]);
@@ -82,7 +82,7 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
       setError(null);
       setMessages((prev) => [...prev, { text: inputMessage, type: "user" }]);
 
-      fetch(import.meta.env.VITE_BACKEND_URI+"/chat", {
+      fetch(import.meta.env.VITE_BACKEND_URI + "/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ input_value: inputMessage, requestId }),
@@ -109,67 +109,70 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
         <Button
           onClick={() => setIsExpanded(true)}
           size="lg"
-          className="rounded-full w-14 h-14 bg-blue-600 hover:bg-blue-700 shadow-lg hover:shadow-xl transition-all duration-300">
+          className="rounded-full w-14 h-14 bg-gray-800 hover:bg-gray-700 shadow-lg hover:shadow-xl transition-all duration-300">
           <MessageCircle className="h-6 w-6 text-white" />
         </Button>
       ) : (
         <div className="relative">
-          <Card className="w-[380px] shadow-2xl bg-white">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-blue-600 text-white rounded-t-lg">
+          <Card className="w-[380px] shadow-2xl bg-gray-900 text-gray-100">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 bg-gray-800 text-white rounded-t-lg">
               <CardTitle className="text-lg font-semibold">
-                Analytics Assistant
+                Chat with AI Assistant
               </CardTitle>
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setIsExpanded(false)}
-                className="h-8 w-8 p-0 hover:bg-blue-500">
+                className="h-8 w-8 p-0 hover:bg-gray-700">
                 <span className="text-xl text-white">×</span>
               </Button>
             </CardHeader>
             <CardContent className="p-4">
               <div className="h-[450px] flex flex-col">
-                <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                <div className="flex-1 overflow-y-auto mb-4 space-y-4 pr-2 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-800">
                   {messages.map((message, index) => (
                     <div
                       key={index}
-                      className={`flex ${
-                        message.type === "user"
-                          ? "justify-end"
-                          : "justify-start"
-                      }`}>
-                      <div
-                        className={`max-w-[80%] rounded-lg px-4 py-2 shadow-sm ${
-                          message.type === "user"
-                            ? "bg-blue-600 text-white"
-                            : "bg-gray-100"
+                      className={`flex ${message.type === "user"
+                        ? "justify-end"
+                        : "justify-start"
                         }`}>
+                      <div
+                        className={`max-w-[80%] rounded-lg px-4 py-2 shadow-sm ${message.type === "user"
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-700 text-gray-100"
+                          }`}>
                         <p className="text-sm">{message.text}</p>
                       </div>
                     </div>
                   ))}
                   {isLoading && (
-                    <div className="flex items-center gap-2 text-muted-foreground p-2 bg-gray-50 rounded-lg">
-                      <Loader2 className="animate-spin h-4 w-4" />
-                      <span className="text-sm">Processing...</span>
+                    <div className="flex items-center justify-center gap-4 text-gray-100 bg-gray-900 p-4 rounded-lg">
+                      <div className="flex gap-1">
+                        <div className="h-2 w-2 bg-blue-600 rounded-full animate-bounce"></div>
+                        <div className="h-2 w-2 bg-blue-500 rounded-full animate-bounce delay-100"></div>
+                        <div className="h-2 w-2 bg-blue-400 rounded-full animate-bounce delay-200"></div>
+                      </div>
+                      <span className="text-sm">Loading, please wait...</span>
                     </div>
                   )}
+
                   <div ref={messagesEndRef} />
                 </div>
 
                 {error && (
-                  <div className="mb-4 p-2 text-sm text-red-600 bg-red-50 rounded-lg border border-red-200">
+                  <div className="mb-4 p-2 text-sm text-red-500 bg-gray-800 rounded-lg border border-red-700">
                     {error}
                   </div>
                 )}
 
-                <div className="flex gap-2 bg-gray-50 p-2 rounded-lg">
+                <div className="flex gap-2 bg-gray-800 p-2 rounded-lg">
                   <Input
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
                     onKeyPress={(e) => e.key === "Enter" && sendMessage()}
                     placeholder="Ask about your analytics..."
-                    className="flex-1 bg-white"
+                    className="flex-1 bg-gray-700 text-gray-100 placeholder-gray-400"
                     disabled={isLoading}
                   />
                   <Button
@@ -186,6 +189,7 @@ const EnhancedChatClient = ({ isExpanded, setIsExpanded }) => {
         </div>
       )}
     </div>
+
   );
 };
 
