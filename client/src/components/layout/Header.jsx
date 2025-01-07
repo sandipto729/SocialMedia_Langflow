@@ -48,7 +48,7 @@ const Header = () => {
           <div
             onClick={() => scrollToSection("hero")}
             className="text-2xl font-bold text-primary-600 cursor-pointer flex gap-4 justify-center items-center">
-            <img src="/insightly.svg" alt="Logo" className="h-10" />
+            <img src="/404 Found.svg" alt="Logo" className="h-10" />
           </div>
 
           {/* Desktop Menu */}
