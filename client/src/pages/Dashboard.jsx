@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { color, motion } from "framer-motion";
 import {
   Select,
   SelectContent,
@@ -130,6 +130,9 @@ const PerformanceCards = ({ data }) => {
     colors: COLORS,
     legend: {
       position: 'bottom',
+      labels: {
+        colors: '#FFFFFF',
+      },
     },
   };
 
@@ -199,7 +202,7 @@ const TypeComparisonChart = ({ data }) => {
   const chartOptions = {
     chart: {
       type: 'bar',
-      height: 400,
+      height: 600,
       stacked: true,
     },
     plotOptions: {
@@ -219,16 +222,35 @@ const TypeComparisonChart = ({ data }) => {
     },
     xaxis: {
       categories: data.map(item => item.type),
+      labels: {
+        style: {
+          colors: '#FFFFFF',
+        },
+      },
     },
     yaxis: {
       title: {
-        text: 'Engagement'
-      }
+        text: 'Engagement',
+        style: {
+          color: '#FFFFFF',
+        },
+      },
+      labels: {
+        style: {
+          colors: '#FFFFFF',
+        },
+      },
+    },
+    legend: {
+      labels: {
+        colors: '#FFFFFF',
+      },
     },
     fill: {
       opacity: 1
     },
     tooltip: {
+      theme: 'dark',
       y: {
         formatter: function (val) {
           return val;
@@ -288,8 +310,8 @@ const PerformanceChart = ({ data }) => {
       type: 'gradient',
     },
     markers: {
+      size: 4,
       shape: 'circle',
-      size: 1,
       strokeColors: '#1b2635',
       strokeWidth: 1,
     },
@@ -300,13 +322,32 @@ const PerformanceChart = ({ data }) => {
     xaxis: {
       type: 'datetime',
       categories: data.map(item => item.date),
+      labels: {
+        style: {
+          colors: '#FFFFFF',
+        },
+      },
     },
     yaxis: {
       title: {
         text: 'Engagement',
+        style: {
+          color: '#FFFFFF',
+        },
+      },
+      labels: {
+        style: {
+          colors: '#FFFFFF',
+        },
+      },
+    },
+    legend: {
+      labels: {
+        colors: '#FFFFFF',
       },
     },
     tooltip: {
+      theme: 'dark',
       x: {
         format: 'dd MMM yyyy',
       },
