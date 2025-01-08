@@ -30,14 +30,10 @@ import EnhancedChatClient from "./EnhancedChatClient";
 import SummaryApi from "../common";
 
 import Chart from "react-apexcharts";
+import { ClipLoader } from "react-spinners";
 
 // DateRangePicker Component
-const DateRangePicker = ({
-  startDate,
-  endDate,
-  onStartDateChange,
-  onEndDateChange,
-}) => {
+const DateRangePicker = ({ startDate, endDate, onStartDateChange, onEndDateChange }) => {
   return (
     <div className="flex items-center gap-2">
       <span className="text-muted-foreground">Date-Range : </span>
@@ -61,13 +57,7 @@ const DateRangePicker = ({
 };
 
 // DashboardHeader Component
-const DashboardHeader = ({
-  dateRange,
-  setDateRange,
-  selectedTypes,
-  setSelectedTypes,
-  onExport,
-}) => {
+const DashboardHeader = ({ dateRange, setDateRange, selectedTypes, setSelectedTypes, onExport }) => {
   return (
     <div className="p-4 space-y-4 bg-card rounded-lg shadow-sm z-10">
       <div className="flex flex-col md:flex-row justify-between gap-4">
@@ -78,9 +68,7 @@ const DashboardHeader = ({
           onEndDateChange={(date) => setDateRange([dateRange[0], date])}
         />
         <div className="flex gap-2">
-          <Select
-            value={selectedTypes}
-            onValueChange={(value) => setSelectedTypes(value)}>
+          <Select value={selectedTypes} onValueChange={(value) => setSelectedTypes(value)}>
             <SelectTrigger className="w-[180px] bg-[#22252e]">
               <SelectValue placeholder="Post Type" />
             </SelectTrigger>
@@ -95,7 +83,6 @@ const DashboardHeader = ({
             <Download className="h-4 w-4 text-black" />
           </Button>
         </div>
-
       </div>
     </div>
   );
@@ -457,9 +444,11 @@ const Dashboard = () => {
     selectedPostTypes: "all",
     search: "",
   });
+  const [loading, setLoading] = useState(true); // Add loading state
 
   // Fetch data from API and update both mockPosts and state.posts
   const fetchDataFromAPI = async () => {
+    setLoading(true); // Set loading to true before fetching data
     try {
       const response = await fetch(SummaryApi.FetchData.url, {
         method: SummaryApi.FetchData.method,
@@ -473,11 +462,12 @@ const Dashboard = () => {
       }
 
       const data = await response.json();
-      // console.log("Fetched data:", data);
       setMockPosts(data);
       setState((prevState) => ({ ...prevState, posts: data }));
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false after fetching data
     }
   };
 
@@ -487,13 +477,9 @@ const Dashboard = () => {
   }, []);
 
   // Filter posts based on date range, type, and search criteria
-
   const [filteredPosts, setFilteredPosts] = useState([]);
 
   useEffect(() => {
-    console.log('Filtering with:', state.dateRange, state.selectedPostTypes, state.search);
-    console.log('Posts:', state.posts); // Log the posts to see their structure
-
     const newFilteredPosts = state.posts.filter((post) => {
       const withinDateRange =
         post.date >= state.dateRange[0] && post.date <= state.dateRange[1];
@@ -505,17 +491,11 @@ const Dashboard = () => {
         post.post_type.toLowerCase().includes(state.search.toLowerCase())
         : true;
 
-      console.log(`Post ${post.post_id} matches filtering criteria?`, withinDateRange, matchesType, matchesSearch);
-
       return withinDateRange && matchesType && matchesSearch;
     });
 
     setFilteredPosts(newFilteredPosts);
   }, [state.posts, state.dateRange, state.selectedPostTypes, state.search]); // Re-run the effect when any of these change
-
-  // Now you can use filteredPosts in your component
-  // console.log('filteredPosts', filteredPosts);
-
 
   // Aggregated data for engagement summary and type comparison
   const aggregatedData = useMemo(() => {
@@ -533,12 +513,7 @@ const Dashboard = () => {
 
     let totals = { likes: 0, shares: 0, comments: 0 };
 
-    // Process filtered posts
-    console.log("filteredPosts", filteredPosts);
     filteredPosts.forEach((post) => {
-      console.log("post", post);
-
-      // Check if post type exists in totalEngagement, initialize if missing
       if (!totalEngagement[post.post_type]) {
         totalEngagement[post.post_type] = { likes: 0, shares: 0, comments: 0, count: 0 };
       }
@@ -554,7 +529,6 @@ const Dashboard = () => {
       totals.comments += post.comments;
     });
 
-    // Calculate averages and trends
     const calculateEngagementRate = (type) => {
       if (totalEngagement[type].count === 0) return 0;
       const total =
@@ -564,7 +538,6 @@ const Dashboard = () => {
       return (total / (totalEngagement[type].count * 3)) * 100;
     };
 
-    // Prepare chart data
     const performanceData = [];
     const dateMap = new Map();
 
@@ -604,16 +577,11 @@ const Dashboard = () => {
     };
   }, [filteredPosts]);
 
-
-
-
   const handleRefresh = () => {
-    // In a real app, this would fetch new data from the API
     setState((prev) => ({ ...prev, posts: generateMockData() }));
   };
 
   const handleExport = () => {
-    // Create CSV content
     const csvContent = [
       ["Post ID", "Type", "Date", "likes", "shares", "comments"].join(","),
       ...filteredPosts.map((post) =>
@@ -628,7 +596,6 @@ const Dashboard = () => {
       ),
     ].join("\n");
 
-    // Create and trigger download
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -654,49 +621,47 @@ const Dashboard = () => {
 
   const [chatExpanded, setChatExpanded] = useState(false);
 
-  // Function to handle AI button click
   const handleAiButtonClick = () => {
     setChatExpanded(true);
   };
 
-
   return (
     <div className="min-h-screen bg-gray-50">
       <div className="min-h-screen bg-black p-4 md:p-6 text-white">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-7xl mx-auto space-y-6 mt-16">
-          <DashboardHeader
-            dateRange={state.dateRange}
-            setDateRange={(range) =>
-              setState((prev) => ({ ...prev, dateRange: range }))
-            }
-            selectedTypes={state.selectedPostTypes}
-            setSelectedTypes={(types) =>
-              setState((prev) => ({ ...prev, selectedPostTypes: types }))
-            }
-            onExport={handleExport}
-          />
+        {loading ? (
+          <div className="flex justify-center items-center h-screen">
+            <ClipLoader color="#FFFFFF" loading={loading} size={150} aria-label="Loading Spinner" data-testid="loader" />
+          </div>
+        ) : (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="max-w-7xl mx-auto space-y-6 mt-16"
+          >
+            <DashboardHeader
+              dateRange={state.dateRange}
+              setDateRange={(range) => setState((prev) => ({ ...prev, dateRange: range }))}
+              selectedTypes={state.selectedPostTypes}
+              setSelectedTypes={(types) => setState((prev) => ({ ...prev, selectedPostTypes: types }))}
+              onExport={handleExport}
+            />
 
-          <PerformanceCards
-            data={{
-              postDistribution: aggregatedData.postDistribution,
-              engagementSummary: aggregatedData.engagementSummary,
-              totals: aggregatedData.totals,
-            }}
-          />
+            <PerformanceCards
+              data={{
+                postDistribution: aggregatedData.postDistribution,
+                engagementSummary: aggregatedData.engagementSummary,
+                totals: aggregatedData.totals,
+              }}
+            />
 
-          <TypeComparisonChart data={aggregatedData.typeComparison} />
-          <PerformanceChart data={aggregatedData.performanceData} />
+            <TypeComparisonChart data={aggregatedData.typeComparison} />
+            <PerformanceChart data={aggregatedData.performanceData} />
 
-          <DataGrid data={filteredPosts} />
-        </motion.div>
-        <EnhancedChatClient
-          isExpanded={chatExpanded}
-          setIsExpanded={setChatExpanded}
-        />
+            <DataGrid data={filteredPosts} />
+          </motion.div>
+        )}
+        <EnhancedChatClient isExpanded={chatExpanded} setIsExpanded={setChatExpanded} />
       </div>
       <Footer />
     </div>
