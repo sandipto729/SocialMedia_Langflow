@@ -35,7 +35,7 @@ const Hero = () => {
               className="w-44 h-16 mx-7 rounded-xl overflow-hidden bg-secondary bg-opacity-20 backdrop-blur-md shadow-lg flex items-center justify-center hover:border hover:border-blue-700 hover:scale-110 transition-all duration-300">
               <span className="font-semibold">Go to Analytics</span>
             </HashLink>
-            <HashLink to='https://www.youtube.com' className="w-20 h-16 mx-7 rounded-xl overflow-hidden bg-white bg-opacity-10 backdrop-blur-md shadow-lg flex items-center justify-center hover:border hover:border-white hover:scale-110 transition-all duration-300"><span className="font-semibold">Demo</span></HashLink>
+            <HashLink to='https://www.youtube.com/watch?v=07mSVUFxPkM' className="w-20 h-16 mx-7 rounded-xl overflow-hidden bg-white bg-opacity-10 backdrop-blur-md shadow-lg flex items-center justify-center hover:border hover:border-white hover:scale-110 transition-all duration-300"><span className="font-semibold">Demo</span></HashLink>
           </div>
 
         </div>
